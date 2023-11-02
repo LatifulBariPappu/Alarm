@@ -3,6 +3,7 @@ package com.example.myalarm;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.os.Build;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
             CharSequence name="akchannel";
             String desc="Channel for Alarm Manager";
             int imp= NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel=new NotificationChannel("androidknowledge",name,imp);
+            channel.setDescription(desc);
+            NotificationManager notificationManager=getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
 
         }
     }
