@@ -38,8 +38,26 @@ public class MainActivity extends AppCompatActivity {
                         .setMinute(0)
                         .setTitleText("Select Alarm Time")
                         .build();
-
+                timePicker.show(getSupportFragmentManager(), "androidknowledge");
+                timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (timePicker.getHour() > 12){
+                            binding.selectTime.setText(
+                                    String.format("%02d",(timePicker.getHour()-12)) +":"+ String.format("%02d", timePicker.getMinute())+"PM"
+                            );
+                        } else {
+                            binding.selectTime.setText(timePicker.getHour()+":" + timePicker.getMinute()+ "AM");
+                        }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
+                        calendar.set(Calendar.MINUTE, timePicker.getMinute());
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                    }
+                });
             }
+            
         });
     }
     private void createNotificationChanned(){
