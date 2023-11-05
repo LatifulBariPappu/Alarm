@@ -8,9 +8,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.myalarm.databinding.ActivityMainBinding;
 import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 
 import java.util.Calendar;
 
@@ -24,7 +26,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding=ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        createNotificationChanned();
+        binding.selectTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timePicker=new MaterialTimePicker.Builder()
+                        .setTimeFormat(TimeFormat.CLOCK_12H)
+                        .setHour(12)
+                        .setMinute(0)
+                        .setTitleText("Select Alarm Time")
+                        .build();
+
+            }
+        });
     }
     private void createNotificationChanned(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
