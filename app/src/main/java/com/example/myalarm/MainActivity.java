@@ -6,9 +6,12 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.myalarm.databinding.ActivityMainBinding;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         binding.selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timePicker=new MaterialTimePicker.Builder()
+                timePicker = new MaterialTimePicker.Builder()
                         .setTimeFormat(TimeFormat.CLOCK_12H)
                         .setHour(12)
                         .setMinute(0)
@@ -42,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
                 timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (timePicker.getHour() > 12){
+                        if (timePicker.getHour() > 12) {
                             binding.selectTime.setText(
-                                    String.format("%02d",(timePicker.getHour()-12)) +":"+ String.format("%02d", timePicker.getMinute())+"PM"
+                                    String.format("%02d", (timePicker.getHour() - 12)) + ":" + String.format("%02d", timePicker.getMinute()) + "PM"
                             );
                         } else {
-                            binding.selectTime.setText(timePicker.getHour()+":" + timePicker.getMinute()+ "AM");
+                            binding.selectTime.setText(timePicker.getHour() + ":" + timePicker.getMinute() + "AM");
                         }
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
@@ -57,7 +60,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-            
+        });
+        binding.setAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calender.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, pendingIntent);
+                Toast.makeText(MainActivity.this, "Alarm Set", Toast.LENGTH_SHORT).show();
+            }
         });
     }
     private void createNotificationChanned(){
