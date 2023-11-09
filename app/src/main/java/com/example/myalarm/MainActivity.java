@@ -72,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Alarm Set", Toast.LENGTH_SHORT).show();
             }
         });
+        binding.cancelAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                if (alarmManager == null){
+                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                }
+                alarmManager.cancel(pendingIntent);
+                Toast.makeText(MainActivity.this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void createNotificationChanned(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
